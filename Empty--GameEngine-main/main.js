@@ -13,7 +13,7 @@ ASSET_MANAGER.downloadAll(() => {
 	*  add sprite class to game engine so the draw and update 
 	*  methods will be called
 	*/
-	gameEngine.addEntity(new SailorMoon(gameEngine));
+	gameEngine.addEntity(new Sprite(gameEngine));
 
 	gameEngine.init(ctx);
 

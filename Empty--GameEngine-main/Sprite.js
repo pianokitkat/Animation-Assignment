@@ -1,7 +1,7 @@
 // for all new JS files, must load them into index.html!
 // all sprites/entities have update and draw
 
-class SailorMoon {
+class Sprite {
     constructor(game){
         this.path = ASSET_MANAGER.getAsset("./sprites/coin.png");
         this.startX = 0
@@ -13,7 +13,7 @@ class SailorMoon {
         this.animator = new Animator(this.path, this.startX, this.startY, this.width, this.height, this.frameCount, this.frameDuration);
         this.game = game;
 
-        this.speed = 0;
+        this.speed = 50;
         this.x = 0;
         this.y = 0;
     };
@@ -22,6 +22,9 @@ class SailorMoon {
         this.x += this.speed * this.game.clockTick;
         if(this.x > 1024){
             this.x = 0;
+        //     this.speed *= -1;
+        // }else if(this.x < 0){
+        //     this.speed *= -1;
         }
 
     };
