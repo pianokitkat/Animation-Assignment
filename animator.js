@@ -21,6 +21,11 @@ class Animator {
             this.width*scale, this.height*scale)
     };
 
+    drawBoundingBox(ctx, BB){
+          ctx.strokeStyle = "red";
+          ctx. strokeRect(BB.x, BB.y, BB.width, BB.height);
+    }
+
     currentFrame(){
         //return Math.floor(this.elapsedTime / this.frameDuration); 
        
