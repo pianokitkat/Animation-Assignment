@@ -18,7 +18,8 @@ class Sprite {
         this.frameCount = 6;
         this.currFrame = 0;
         this.frameDuration = 0.2; 
-        this.animator = new Animator(this.path, this.startX, this.startY, this.widthPad, this.height, this.frameCount, this.frameDuration);
+        this.animator = new Animator(this.path, this.startX, this.startY, this.widthPad, 
+                this.height, this.frameCount, this.frameDuration, false);
         this.game = game;
 
         //bounding box
@@ -36,16 +37,16 @@ class Sprite {
     };
 
     update(){
-        if(this.x < 0 && this.y < this.screenHeight/2){
+        if(this.x < 0 && this.y < this.screenHeight/2){ //left
             this.speedX = this.speed;
             this.speedY = -this.speed;
-        }else if(this.x > this.screenWidth/2 && this.y < 0){
+        }else if(this.x > this.screenWidth/2 && this.y < 0){ //top
             this.speedX = this.speed;
             this.speedY = this.speed;
-        }else if(this.x > this.screenWidth && this.y > this.screenHeight/2){
-            this.speedX = -this.speed;
+        }else if(this.x > this.screenWidth && this.y > this.screenHeight/2){ //right
+            this.speedX = -this.speed; 
             this.speedY = this.speed;
-        }else if(this.x < this.screenWidth/2 && this.y >  this.screenHeight){
+        }else if(this.x < this.screenWidth/2 && this.y >  this.screenHeight){ //bottom
             this.speedX = -this.speed;
             this.speedY = -this.speed;
         }
@@ -58,6 +59,30 @@ class Sprite {
         //this.BB = new BoundingBox(this.x, this.y, this.widthPad, this.height);
         this.BB = new BoundingBox(this.x + (this.widthPad-this.width[this.animator.currentFrame()])/2, 
                 this.y, this.width[this.animator.currentFrame()], this.height); 
+
+
+        // collision
+        var thisSprite = this;
+        this.game.entities.forEach(function (entity) {              // applies function to all entities in game
+            if(entity instanceof Background) { 
+                if(thisSprite.BB.collide(entity.BBLeft)){
+                    this.speedX = this.speed;
+                    this.speedY = -this.speed;
+
+                }else if(thisSprite.BB.collide(entity.BBTop)){
+                    this.speedX = this.speed;
+                    this.speedY = this.speed;
+
+                }else if(thisSprite.BB.collide(entity.BBRight)){
+                    this.speedX = -this.speed; 
+                    this.speedY = this.speed;
+
+                }else if(thisSprite.BB.collide(entity.BBBottom)){
+                    this.speedX = -this.speed;
+                    this.speedY = -this.speed;
+                }
+            }
+        });
     };
 
     /*
@@ -74,13 +99,12 @@ class Sprite {
         */
         //ctx.drawImage(this.path, 5, 0, 45, 106, 0, 0, 40, 106); 
 
-        this.animator.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1)
+        this.animator.drawFrame(this.game.clockTick, ctx, this.x, this.y, 1);
 
         // change to only display on debug
         if(true){
             this.animator.drawBoundingBox(ctx, this.BB);
-        }
-
+        } 
 
         // intensive to draw everything with commands
         //  so easier to draw an image

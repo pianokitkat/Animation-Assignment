@@ -3,7 +3,9 @@ const gameEngine = new GameEngine();
 const ASSET_MANAGER = new AssetManager();
 
 // queue sprite sheet for download
-ASSET_MANAGER.queueDownload("./sprites/coin.png");
+//ASSET_MANAGER.queueDownload("./sprites/coin.png");
+ASSET_MANAGER.queueDownload("./sprites/bridge.jpg");
+ASSET_MANAGER.queueDownload("./sprites/yubaba.png");
 
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
@@ -13,7 +15,10 @@ ASSET_MANAGER.downloadAll(() => {
 	*  add sprite class to game engine so the draw and update 
 	*  methods will be called
 	*/
-	gameEngine.addEntity(new Sprite(gameEngine));
+	gameEngine.addEntity(new Yubaba(gameEngine));
+	gameEngine.addEntity(new Background(gameEngine));
+	//gameEngine.addEntity(new Sprite(gameEngine));
+	
 
 	gameEngine.init(ctx);
 

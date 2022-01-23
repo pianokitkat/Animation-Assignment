@@ -1,7 +1,7 @@
 class Animator {
-   constructor(path, xStart, yStart, width, height, frameCount, frameDuration){
+   constructor(path, xStart, yStart, width, height, frameCount, frameDuration, loop){
         //add instance varaibles that are of the same name 
-        Object.assign(this, {path, xStart, yStart, width, height, frameCount, frameDuration});
+        Object.assign(this, {path, xStart, yStart, width, height, frameCount, frameDuration, loop});
         this.elapsedTime = 0; 
         this.totalTime = frameCount + frameDuration;
    };
@@ -14,11 +14,19 @@ class Animator {
        }
        const frame = this.currentFrame();
 
-       ctx.drawImage(this.path, 
-            this.xStart + this.width*frame, this.yStart,
+       if(this.loop){
+          ctx.drawImage(this.path, 
+               this.xStart, this.yStart,
+               this.width, this.height,
+               x, y,
+               this.width, this.height)
+
+       }else{
+            ctx.drawImage(this.path, this.xStart + this.width*frame, this.yStart, 
             this.width, this.height,
             x, y,
             this.width*scale, this.height*scale)
+       }
     };
 
     drawBoundingBox(ctx, BB){
@@ -27,10 +35,9 @@ class Animator {
     }
 
     currentFrame(){
-        //return Math.floor(this.elapsedTime / this.frameDuration); 
-       
-        return (Math.floor(this.elapsedTime / this.frameDuration)% this.frameCount); // mod now has it 
-        
+        return (Math.floor(this.elapsedTime / this.frameDuration)% this.frameCount); 
+        // mod now has it on first frame for two frame durations
+ 
     }
 
    isDone(){
